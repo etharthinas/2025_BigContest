@@ -1,0 +1,16 @@
+[project]
+name = "2025-bigcontest"
+version = "0.1.0"
+description = "2025 Big Contest"
+authors = [
+    {name = "Jay Kim",email = "csjay@snu.ac.kr"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pandas (>=2.3.2,<3.0.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -40,7 +40,7 @@ def normalize_dead_mcts():
             normalized_data["attribute"] = attribute
             data_df.append(normalized_data)
     df = pd.DataFrame(data_df)
-    df.to_csv("normalized_dead_mcts.csv", index=False)
+    df.to_csv("data/normalized_dead_mcts.csv", index=False)
 
 
 if __name__ == "__main__":

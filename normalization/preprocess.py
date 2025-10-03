@@ -19,9 +19,16 @@ def preprocess(DATA_PATH: str):
     merged_df["ARE_D"] = pd.to_datetime(merged_df["ARE_D"], format='%Y%m%d')
     merged_df["MCT_ME_D"] = pd.to_datetime(merged_df["MCT_ME_D"].fillna(''), format='%Y%m%d.0', errors='coerce')
 
+    merged_df["closed"] = merged_df["MCT_ME_D"].notna().astype(int)
+
     return merged_df
 
 def dead_mcts_only(DATA_PATH = DATA_PATH):
     merged_df = preprocess(DATA_PATH)
     dead_mcts = merged_df[merged_df["MCT_ME_D"].notna()]["ENCODED_MCT"].unique().tolist()
     return dead_mcts
+
+def labeled_all(DATA_PATH = DATA_PATH):
+    merged_df = preprocess(DATA_PATH)
+    labeled_all = merged_df["ENCODED_MCT"].unique().tolist()
+    return labeled_all

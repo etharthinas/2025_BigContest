@@ -9,6 +9,7 @@ class MCT:
         self.merged_df = preprocess(DATA_PATH)
         self.bzn_cd_nm = self.merged_df[self.merged_df['ENCODED_MCT'] == name]['HPSN_MCT_BZN_CD_NM'].values[0]
         self.zcd_nm = self.merged_df[self.merged_df['ENCODED_MCT'] == name]['HPSN_MCT_ZCD_NM'].values[0]
+        self.closed = self.merged_df[self.merged_df['ENCODED_MCT'] == name]['closed'].values[0]
 
     def get_time_attribute(self, attribute):
         return self.merged_df[self.merged_df['ENCODED_MCT'] == self.name][[attribute, "TA_YM"]].groupby("TA_YM").mean()
@@ -62,7 +63,8 @@ class MCT:
             "mct": self.name,
             "attribute": attribute,
             "bzn" : self.bzn_cd_nm,
-            "zcd" : self.zcd_nm
+            "zcd" : self.zcd_nm,
+            "closed": self.closed
         }
     
     def slope(self, df: pd.DataFrame) -> tuple[float, float]:

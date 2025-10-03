@@ -23,14 +23,15 @@ def get_address(address, name):
                     place.click()
                     page.wait_for_timeout(1000)
                     return page.url
+            return "-"
         except Exception as e:
             return None
 
 def get_address_list():
-    data = pd.read_csv("data/refined_address.csv")[["MCT_BSE_AR", "MCT_NM"]]
+    data = pd.read_csv("data/not_yet.csv")[["MCT_BSE_AR", "MCT_NM"]]
     url_list = list()
 
-    for i in tqdm(range(0, (len(data)))):
+    for i in tqdm(range(900, len(data))):
         address, name = data.iloc[i]["MCT_BSE_AR"], data.iloc[i]["MCT_NM"].replace("*", "")
         if address.strip()[-1].isdigit():
             url = get_address(address, name)
@@ -38,13 +39,8 @@ def get_address_list():
                 url_list.append((i, url))
     
     url_df = pd.DataFrame(url_list, columns=["index", "url"])
-    url_df.to_csv("data/address_url.csv", index=False)
+    url_df.to_csv("data/address_url_900.csv", index=False)
     
 
 if __name__ == "__main__":
-    df1 = pd.read_csv("data/address_url_100.csv")
-    df2 = pd.read_csv("data/address_url_100_1000.csv")
-    df3 = pd.read_csv("data/address_url_1000_4186.csv")
-
-    df = pd.concat([df1, df2, df3], axis=0)
-    breakpoint()
+    get_address_list()

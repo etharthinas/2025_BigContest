@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 # from sklearn.model_selection import StratifiedKFold
-from sklearn.calibration import CalibratedClassifierCV
+# from sklearn.calibration import CalibratedClassifierCV
 from sklearn.linear_model import LogisticRegression
 # from sklearn.preprocessing import StandardScaler
 from imodels import RuleFitClassifier
 # from scipy.special import expit
 from tqdm import tqdm
+from sklearn.linear_model import LassoCV
 
 # === STEP 1. PREPARE DATA ===
 def prepare_data(df):
@@ -25,8 +26,8 @@ def prepare_data(df):
     return pivot_df
 
 # === STEP 2. RULEFIT TRAINING FUNCTION ===
-def train_rulefit(X, y, random_state=42):
-    rf = RuleFitClassifier(tree_size=2, sample_fract=1.0, max_rules=200, random_state=random_state)
+def train_rulefit(X, y, random_state=42, max_rules=50):
+    rf = RuleFitClassifier(tree_size=2, sample_fract=1.0, max_rules=max_rules, random_state=random_state)
     rf.fit(X, y)
     return rf
 
@@ -51,7 +52,7 @@ def rulefit_pipeline(df):
 
     # --- General Model ---
     general_feats = [c for c in X_all.columns if c.startswith(('mean_all', 'slope_all'))]
-    rf_gen = train_rulefit(X_all[general_feats], y_all)
+    rf_gen = train_rulefit(X_all[general_feats], y_all, max_rules = 200)
     preds_general = rf_gen.predict_proba(X_all[general_feats])[:, 1]
     all_rules.append(extract_rules(rf_gen, 'general'))
 

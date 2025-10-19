@@ -8,5 +8,9 @@ breakpoint()
 
 
 df = pd.read_csv("data/normalized_all_mcts.csv")
-df2 = df[["std_all", "std_bzn", "std_zcd", "r2_all", "r2_bzn", "r2_zcd"]].groupby(df.attribute).mean()
+df2 = (
+    df[["std_all", "std_bzn", "std_zcd", "r2_all", "r2_bzn", "r2_zcd"]]
+    .groupby(df.attribute)
+    .mean()
+)
 # df2.to_csv("attribute_summary.csv")

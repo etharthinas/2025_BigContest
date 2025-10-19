@@ -3,6 +3,7 @@ import pandas as pd
 from tqdm import tqdm
 from preprocess import dead_mcts_only
 
+
 def normalize_dead_mcts():
     dead_mcts = dead_mcts_only()
     data_df = list()
@@ -30,7 +31,7 @@ def normalize_dead_mcts():
         "MCT_UE_CLN_NEW_RAT",
         "RC_M1_SHC_RSD_UE_CLN_RAT",
         "RC_M1_SHC_WP_UE_CLN_RAT",
-        "RC_M1_SHC_FLP_UE_CLN_RAT"
+        "RC_M1_SHC_FLP_UE_CLN_RAT",
     ]
 
     for mct_name in tqdm(dead_mcts):

@@ -115,9 +115,9 @@ def rulefit_pipeline(df):
     dynamic_df = closed_df[perturb_cols]
 
     # 3. Set parameters for noise generation
-    num_copies = 33
+    num_copies = 20
     mean = 0.0
-    std_dev = 0.1
+    std_dev = 0.00
     noise_shape = dynamic_df.shape # (num_rows, num_perturb_cols)
 
     # 4. Create the list of 10 mock DataFrames
@@ -153,7 +153,7 @@ def rulefit_pipeline(df):
     general_feats = [
         c for c in X_all.columns if c.startswith(("mean_all", "slope_all"))
     ]
-    rf_gen = train_rulefit(new_X_all[general_feats], new_y_all, max_rules=50, include_linear=True, cutoff=25)
+    rf_gen = train_rulefit(new_X_all[general_feats], new_y_all, max_rules=50, include_linear=True, cutoff=23)
     preds_general = rf_gen.predict_proba(X_all[general_feats])[:, 1]
     all_rules.append(extract_rules(rf_gen, "general"))
 
@@ -166,7 +166,7 @@ def rulefit_pipeline(df):
 
         if sub["closed"].sum() < 5 or len(sub) - sub["closed"].sum() < 5 or len(sub) < 20:
             continue
-        rf_z = train_rulefit(sub[feats], sub["closed"], max_rules=50, cutoff=10)
+        rf_z = train_rulefit(sub[feats], sub["closed"], max_rules=50, cutoff=8)
         
         preds_z = rf_z.predict_proba(sub_org[feats_org])[:, 1]
         preds_zcd[sub_org.index] = preds_z
@@ -182,9 +182,9 @@ def rulefit_pipeline(df):
         feats = [c for c in sub.columns if c.startswith(("mean_bzn", "slope_bzn"))]
         feats_org = [c for c in sub_org.columns if c.startswith(("mean_bzn", "slope_bzn"))]
 
-        if sub["closed"].sum() < 3 or len(sub) < 20:
+        if sub["closed"].sum() < 5 or len(sub) - sub["closed"].sum() < 5 or len(sub) < 20:
             continue
-        rf_b = train_rulefit(sub[feats], sub["closed"], max_rules=50, cutoff=10)
+        rf_b = train_rulefit(sub[feats], sub["closed"], max_rules=50, cutoff=8)
 
 
         preds_b = rf_b.predict_proba(sub_org[feats_org])[:, 1]
